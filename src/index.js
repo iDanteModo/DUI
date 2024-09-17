@@ -17,59 +17,37 @@ function menu() {
 
 function photoCarousel() {
   const photos = document.querySelectorAll("#photo");
-  const nextButton = document.getElementById("changePhoto");
-  const previousButton = document.getElementById("changePhotoPrevious");
   const slides = document.querySelectorAll("#slide");
-  let indexNext = 1;
-  let indexPrev = photos.length - 1;
-  console.log(photos.length);
+  const nextPhoto = document.getElementById("nextPhoto");
+  const prevPhoto = document.getElementById("prevPhoto");
+  let index = 0; // Initialize to the starting position
 
-  nextButton.addEventListener("click", () => {
+  function updateDisplay() {
+    // Remove 'photo' and 'selected' from all elements
+    photos.forEach((photo) => photo.classList.remove("photo"));
+    slides.forEach((slide) => slide.classList.remove("selected"));
+
+    // Add 'noPhoto' and 'unselected' to all elements
     photos.forEach((photo) => photo.classList.add("noPhoto"));
     slides.forEach((slide) => slide.classList.add("unselected"));
-    if (indexNext < photos.length) {
-      photos.forEach((photo) => photo.classList.remove("photo"));
-      slides.forEach((slide) => slide.classList.remove("selected"));
-      photos[indexNext].classList.add("photo");
-      slides[indexNext].classList.add("selected");
-      indexNext++;
-    } else {
-      indexNext = 0;
-      photos.forEach((photo) => photo.classList.remove("photo"));
-      slides.forEach((slide) => slide.classList.remove("selected"));
-      slides.forEach((slide) => slide.classList.add("unselected"));
-      photos[indexNext].classList.add("photo");
-      slides[indexNext].classList.add("selected");
-      indexNext++;
-    }
+
+    // Add 'photo' and 'selected' to the current photo and slide
+    photos[index].classList.add("photo");
+    slides[index].classList.add("selected");
+  }
+
+  nextPhoto.addEventListener("click", () => {
+    // Increment index and wrap around if necessary
+    index = (index + 1) % photos.length;
+    updateDisplay();
   });
 
-  previousButton.addEventListener("click", () => {
-    photos.forEach((photo) => photo.classList.add("noPhoto"));
-    slides.forEach((slide) => slide.classList.add("unselected"));
-    if (indexPrev >= 0) {
-      photos.forEach((photo) => photo.classList.remove("photo"));
-      slides.forEach((slide) => slide.classList.remove("selected"));
-      photos[indexPrev].classList.add("photo");
-      slides[indexPrev].classList.add("selected");
-      indexPrev--;
-      console.log(indexPrev);
-    } else {
-      indexPrev = photos.length - 1;
-      photos.forEach((photo) => photo.classList.remove("photo"));
-      slides.forEach((slide) => slide.classList.remove("selected"));
-      slides.forEach((slide) => slide.classList.add("unselected"));
-      photos[indexPrev].classList.add("photo");
-      slides[indexPrev].classList.add("selected");
-      indexPrev--;
-      console.log(indexPrev);
-    }
+  prevPhoto.addEventListener("click", () => {
+    // Decrement index and wrap around if necessary
+    index = (index - 1 + photos.length) % photos.length;
+    updateDisplay();
   });
- }
-
-
-
+}
 
 menu();
 photoCarousel();
-nextPhoto();
